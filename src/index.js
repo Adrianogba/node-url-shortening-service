@@ -44,7 +44,7 @@ app.get('/shorten', (req, res, next) => {
 	  	'INSERT INTO shorturls (long_url, created_date, creator_ip, created_by, referrals) values ($1, $2, $3, $4, $5) RETURNING id',
 	  	[urlParam, dateCreated, '202.023.222.143', 1, 0],
 	  	(err, result) => {
-		  if(err) return err;
+		  if(err) return res.json({error: err})
 		  else {
 	   		const newlyInsertedRowId = result.rows[0].id;
 	   		shortUrl = shortURL.encode(newlyInsertedRowId);

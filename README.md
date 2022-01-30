@@ -36,12 +36,12 @@ SQL exemplo da base:
 
 ```
 CREATE TABLE shorturls (
-  id int primary key NOT NULL,
-  long_url varchar(255) unique NOT NULL,
-  created_date date NOT NULL,
-  creator_ip char(15) NOT NULL,
-  created_by int NOT NULL,
-  referrals int NOT NULL default '0'
+    id SERIAL PRIMARY KEY,
+    long_url varchar(255) unique NOT NULL,
+    created_date date NOT NULL,
+    creator_ip char(15) NOT NULL,
+    created_by int NOT NULL,
+    referrals int NOT NULL default '0'
 );
 ```
 
