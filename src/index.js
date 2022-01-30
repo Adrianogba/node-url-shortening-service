@@ -59,7 +59,7 @@ app.get('/shortenedList', (req, res, next) => {
 	const dateParam = req.query.date;
 
 	const sql = 'SELECT * FROM shorturls WHERE created_date=$1';
-	const params = [dateParam];
+	const params = [dateParam.toString()];
 
 	const query = client.query(sql, params, (err, result) => {
 		if(err) return res.json({error: err});
