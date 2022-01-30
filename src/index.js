@@ -34,7 +34,7 @@ app.get('/shorten', (req, res, next) => {
 	const urlParam = req.query.url;
 	const ip = req.connection.remoteAddress;
 	let shortUrl = '';
-	let dateCreated = new Date().getTime();
+	let dateCreated = new Date();
 
 	pg.defaults.ssl = true;
 	pg.connect(process.env.DATABASE_URL, (err, client, done) => {
