@@ -55,6 +55,26 @@ app.get('/shorten', (req, res, next) => {
     });
 });
 
+app.get('/shortenedList', (req, res, next) => {
+	const dateParam = req.query.date;
+
+	const sql = 'SELECT * FROM shorturls WHERE created_date=$1';
+	const params = [dateParam];
+
+	const query = client.query(sql, params, (err, result) => {
+		if(err) return res.json({error: err});
+		else {
+			if (result.rows.length >= 0){
+				done();
+				return res.redirect(301, result.rows);
+			} else {
+				done();
+				return res.status(404).send('URL não encontrada');
+			}
+		}
+	});
+});
+
 app.get('/:shortId', (req, res, next) => {
 	const shortId = req.params.shortId;
 	if (shortId.length > 4){
@@ -91,25 +111,6 @@ app.get('/:shortId', (req, res, next) => {
     });
 });
 
-app.get('/shortenedList', (req, res, next) => {
-	const dateParam = req.query.date;
-
-	const sql = 'SELECT * FROM shorturls WHERE created_date=$1';
-	const params = [dateParam];
-
-	const query = client.query(sql, params, (err, result) => {
-		if(err) return res.json({error: err});
-		else {
-			if (result.rows.length >= 0){
-				done();
-				return res.redirect(301, result.rows);
-			} else {
-				done();
-				return res.status(404).send('URL não encontrada');
-			}
-		}
-	});
-});
 
 app.listen(app.get('port'), function() {
   console.log('App Node rodando na porta', app.get('port'));
