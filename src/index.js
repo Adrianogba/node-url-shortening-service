@@ -41,7 +41,7 @@ app.get('/shorten', (req, res, next) => {
 	  if (err) throw err;
 
 	  const query = client.query(
-	  	'INSERT INTO shorturls (long_url, created_date, creator_ip, creator_user_id, referrals) values ($1, $2, $3, $4, $5) RETURNING id', 
+	  	'INSERT INTO shorturls (long_url, created_date, creator_ip, created_by, referrals) values ($1, $2, $3, $4, $5) RETURNING id',
 	  	[urlParam, dateCreated, '202.023.222.143', 1, 0],
 	  	(err, result) => {
 		  if(err) throw err;
