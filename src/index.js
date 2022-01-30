@@ -66,7 +66,27 @@ app.get('/shortenedList', (req, res, next) => {
 		else {
 			if (result.rows.length >= 0){
 				done();
-				return res.redirect(301, result.rows);
+				return res.json({result: result.rows});
+			} else {
+				done();
+				return res.status(404).send('URL não encontrada');
+			}
+		}
+	});
+});
+
+app.get('/shortenedId', (req, res, next) => {
+	const idParam = req.query.id;
+
+	const sql = 'SELECT * FROM shorturls WHERE id=$1';
+	const params = [idParam.toString()];
+
+	const query = client.query(sql, params, (err, result) => {
+		if(err) return res.json({error: err});
+		else {
+			if (result.rows.length >= 1){
+				done();
+				return res.json({ response: result.rows[0].long_url });
 			} else {
 				done();
 				return res.status(404).send('URL não encontrada');
