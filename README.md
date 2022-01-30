@@ -5,6 +5,7 @@ Serviço de encurtamento de URLs feito em NodeJS e Express.
 ## Live Demo
 
 Encurtar a URL - https://url-shortener-unyleya.herokuapp.com/shorten?url=http://www.google.com <br>
+Encurtar a URL - https://url-shortener-unyleya.herokuapp.com/shortenedList?date=2022-01-30 <br>
 Vistar URL encurtada - http://url-shortener-unyleya.herokuapp.com/v
 
 ## Rodando localmente
@@ -37,7 +38,7 @@ SQL exemplo da base:
 ```
 CREATE TABLE shorturls (
     id SERIAL PRIMARY KEY,
-    long_url varchar(255) unique NOT NULL,
+    long_url varchar(255) NOT NULL,
     created_date date NOT NULL,
     creator_ip char(15) NOT NULL,
     created_by int NOT NULL,

@@ -69,7 +69,7 @@ app.get('/:shortId', (req, res, next) => {
 		const params = [rowId];
 
 		const query = client.query(sql, params, (err, result) => {
-			if(err) throw err;
+			if(err) return res.json({error: err});
 			else {
 				// Increment referral count
 				const query = client.query({
@@ -89,6 +89,26 @@ app.get('/:shortId', (req, res, next) => {
 			}
 		});
     });
+});
+
+app.get('/shortenedList', (req, res, next) => {
+	const dateParam = req.query.date;
+
+	const sql = 'SELECT * FROM shorturls WHERE created_date=$1';
+	const params = [dateParam];
+
+	const query = client.query(sql, params, (err, result) => {
+		if(err) return res.json({error: err});
+		else {
+			if (result.rows.length >= 0){
+				done();
+				return res.redirect(301, result.rows);
+			} else {
+				done();
+				return res.status(404).send('URL não encontrada');
+			}
+		}
+	});
 });
 
 app.listen(app.get('port'), function() {
