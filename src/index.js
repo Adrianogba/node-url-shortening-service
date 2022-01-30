@@ -32,7 +32,6 @@ const shortURL = new function() {
 
 app.get('/shorten', (req, res, next) => {
 	const urlParam = req.query.url;
-	const ip = req.connection.remoteAddress;
 	let shortUrl = '';
 	let dateCreated = new Date();
 
@@ -42,7 +41,7 @@ app.get('/shorten', (req, res, next) => {
 
 	  const query = client.query(
 	  	'INSERT INTO shorturls (long_url, created_date, creator_ip, created_by, referrals) values ($1, $2, $3, $4, $5) RETURNING id',
-	  	[urlParam, dateCreated, '202.023.222.143', 1, 0],
+	  	[urlParam, dateCreated, '', 1, 0],
 	  	(err, result) => {
 		  if(err) return res.json({error: err})
 		  else {
@@ -61,18 +60,24 @@ app.get('/shortenedList', (req, res, next) => {
 	const sql = 'SELECT * FROM shorturls WHERE created_date=$1';
 	const params = [dateParam.toString()];
 
-	const query = client.query(sql, params, (err, result) => {
-		if(err) return res.json({error: err});
-		else {
-			if (result.rows.length >= 0){
-				done();
-				return res.json({result: result.rows});
-			} else {
-				done();
-				return res.status(404).send('URL não encontrada');
+	pg.defaults.ssl = true;
+	pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+		if (err) throw err;
+
+		const query = client.query(sql, params, (err, result) => {
+			if(err) return res.json({error: err});
+			else {
+				if (result.rows.length >= 0){
+					done();
+					return res.json({result: result.rows});
+				} else {
+					done();
+					return res.status(404).send('URL não encontrada');
+				}
 			}
-		}
+		});
 	});
+
 });
 
 app.get('/shortenedId', (req, res, next) => {
@@ -81,18 +86,24 @@ app.get('/shortenedId', (req, res, next) => {
 	const sql = 'SELECT * FROM shorturls WHERE id=$1';
 	const params = [idParam.toString()];
 
-	const query = client.query(sql, params, (err, result) => {
-		if(err) return res.json({error: err});
-		else {
-			if (result.rows.length >= 1){
-				done();
-				return res.json({ response: result.rows[0].long_url });
-			} else {
-				done();
-				return res.status(404).send('URL não encontrada');
+	pg.defaults.ssl = true;
+	pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+		if (err) throw err;
+
+		const query = client.query(sql, params, (err, result) => {
+			if(err) return res.json({error: err});
+			else {
+				if (result.rows.length >= 1){
+					done();
+					return res.json({ response: result.rows[0].long_url });
+				} else {
+					done();
+					return res.status(404).send('URL não encontrada');
+				}
 			}
-		}
+		});
 	});
+
 });
 
 app.get('/:shortId', (req, res, next) => {

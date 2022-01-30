@@ -7,7 +7,7 @@ Serviço de encurtamento de URLs feito em NodeJS e Express.
 Encurtar a URL - https://url-shortener-unyleya.herokuapp.com/shorten?url=http://www.google.com <br>
 Encurtar a URL - https://url-shortener-unyleya.herokuapp.com/shortenedList?date=2022-01-30 <br>
 Encurtar a URL - https://url-shortener-unyleya.herokuapp.com/shortenedId?id=2 <br>
-Vistar URL encurtada - http://url-shortener-unyleya.herokuapp.com/v
+Vistar URL encurtada - http://url-shortener-unyleya.herokuapp.com/v/
 
 ## Rodando localmente
 
